@@ -25,9 +25,11 @@ public class Main {
         BufferedImage inputImage = ImageIO.read(new File(inputFileName));
         // TODO implement EA methods
         EvolutionAlgorithmConfiguration<GridIndividual> configuration = EvolutionAlgorithmConfiguration.<GridIndividual>builder()
+                .initialPopulationGenerator(() -> null)
                 .selection(collection -> null)
                 .crossover((o, o2) -> null)
                 .mutation(o -> null)
+                .fitness(value -> 0)
                 .build();
         GridCompressor compressor = new GridCompressor(inputImage, outputFileName, true, configuration);
     }

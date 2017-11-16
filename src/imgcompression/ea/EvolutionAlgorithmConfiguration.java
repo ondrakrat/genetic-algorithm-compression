@@ -1,8 +1,6 @@
 package imgcompression.ea;
 
-import imgcompression.ea.functions.Crossover;
-import imgcompression.ea.functions.Mutation;
-import imgcompression.ea.functions.Selection;
+import imgcompression.ea.functions.*;
 import lombok.Getter;
 
 /**
@@ -13,16 +11,22 @@ import lombok.Getter;
 @Getter
 public class EvolutionAlgorithmConfiguration<I extends Individual> {
 
-    private Crossover<I> crossoverFunction;
-    private Mutation<I> mutationFunction;
-    private Selection<I> selectionFunction;
+    private final Crossover<I> crossoverFunction;
+    private final Mutation<I> mutationFunction;
+    private final Selection<I> selectionFunction;
+    private final Fitness<I> fitnessFunction;
+    private final InitialPopulationGenerator<I> initialPopulationGeneratorFunction;
 
     public EvolutionAlgorithmConfiguration(Crossover<I> crossoverFunction,
                                            Mutation<I> mutationFunction,
-                                           Selection<I> selectionFunction) {
+                                           Selection<I> selectionFunction,
+                                           Fitness<I> fitnessFunction,
+                                           InitialPopulationGenerator<I> initialPopulationGeneratorFunction) {
         this.crossoverFunction = crossoverFunction;
         this.mutationFunction = mutationFunction;
         this.selectionFunction = selectionFunction;
+        this.fitnessFunction = fitnessFunction;
+        this.initialPopulationGeneratorFunction = initialPopulationGeneratorFunction;
     }
 
     public static <I extends Individual> Builder<I> builder() {
@@ -34,6 +38,8 @@ public class EvolutionAlgorithmConfiguration<I extends Individual> {
         private Crossover<I> crossoverFunction;
         private Mutation<I> mutationFunction;
         private Selection<I> selectionFunction;
+        private Fitness<I> fitnessFunction;
+        private InitialPopulationGenerator<I> initialPopulationGeneratorFunction;
 
         private Builder() {
             // hide constructor
@@ -54,13 +60,37 @@ public class EvolutionAlgorithmConfiguration<I extends Individual> {
             return this;
         }
 
+        public Builder<I> fitness(Fitness<I> fitnessFunction) {
+            this.fitnessFunction = fitnessFunction;
+            return this;
+        }
+
+        public Builder<I> initialPopulationGenerator(InitialPopulationGenerator<I> initialPopulationGeneratorFunction) {
+            this.initialPopulationGeneratorFunction = initialPopulationGeneratorFunction;
+            return this;
+        }
+
         public EvolutionAlgorithmConfiguration<I> build() {
-            assert crossoverFunction != null && mutationFunction != null && selectionFunction != null;
+            assert checkFunctions();
             return new EvolutionAlgorithmConfiguration<>(
                     crossoverFunction,
                     mutationFunction,
-                    selectionFunction
-            );
+                    selectionFunction,
+                    fitnessFunction,
+                    initialPopulationGeneratorFunction);
+        }
+
+        /**
+         * Checks if all functions are assigned and thus the {@link EvolutionAlgorithmConfiguration} can be built.
+         *
+         * @return {@code true} if the {@link EvolutionAlgorithmConfiguration} can be safely built
+         */
+        private boolean checkFunctions() {
+            return crossoverFunction != null
+                    && mutationFunction != null
+                    && selectionFunction != null
+                    && fitnessFunction != null
+                    && initialPopulationGeneratorFunction != null;
         }
     }
 }

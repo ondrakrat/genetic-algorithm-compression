@@ -1,6 +1,7 @@
 package imgcompression.impl;
 
 import imgcompression.ea.Individual;
+import imgcompression.ea.functions.Fitness;
 import lombok.Data;
 
 import java.awt.image.BufferedImage;
@@ -36,7 +37,10 @@ public class GridIndividual implements Individual {
      * @param xDimension amount of tetragons per row
      * @param yDimension amount of tetragons per column
      */
-    public GridIndividual(BufferedImage inputImage, int xDimension, int yDimension) {
+    public GridIndividual(BufferedImage inputImage,
+                          int xDimension,
+                          int yDimension,
+                          Fitness<GridIndividual> fitnessFunction) {
         assert xDimension > 0 && yDimension > 0;
         this.inputImage = inputImage;
         this.vertices = new double[xDimension + 1][yDimension + 1][2];
@@ -71,11 +75,5 @@ public class GridIndividual implements Individual {
     private boolean checkCoordinates(int x, int y, Object[][] array) {
         // TODO check x/y values on the edges of the pictures (need to be 0 or width/height) - only for setters though
         return x > 0 && y > 0 && x < array.length && y < array[0].length;
-    }
-
-    @Override
-    public double fitness() {
-        // TODO implement
-        return 0;
     }
 }
