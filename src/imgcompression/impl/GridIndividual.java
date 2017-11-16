@@ -1,7 +1,6 @@
 package imgcompression.impl;
 
 import imgcompression.ea.Individual;
-import imgcompression.ea.functions.Fitness;
 import lombok.Data;
 
 import java.awt.image.BufferedImage;
@@ -39,8 +38,7 @@ public class GridIndividual implements Individual {
      */
     public GridIndividual(BufferedImage inputImage,
                           int xDimension,
-                          int yDimension,
-                          Fitness<GridIndividual> fitnessFunction) {
+                          int yDimension) {
         assert xDimension > 0 && yDimension > 0;
         this.inputImage = inputImage;
         this.vertices = new double[xDimension + 1][yDimension + 1][2];
@@ -55,6 +53,24 @@ public class GridIndividual implements Individual {
     public int[] getVertexColour(int x, int y) {
         assert checkCoordinates(x, y, colours);
         return colours[x][y];
+    }
+
+    public void setVertex(int x, int y, int xCoord, int yCoord) {
+        assert checkCoordinates(x, y, vertices);
+        assert xCoord >= 0 && xCoord < inputImage.getWidth();
+        assert yCoord >= 0 && yCoord < inputImage.getHeight();
+        vertices[x][y][0] = xCoord;
+        vertices[x][y][1] = yCoord;
+    }
+
+    public void setColour(int x, int y, int r, int g, int b) {
+        assert checkCoordinates(x, y, colours);
+        assert r >= 0 && r < 256;
+        assert g >= 0 && g < 256;
+        assert b >= 0 && b < 256;
+        colours[x][y][0] = r;
+        colours[x][y][1] = g;
+        colours[x][y][2] = b;
     }
 
     public double getVertexXCoordinate(int x, int y) {
@@ -73,7 +89,6 @@ public class GridIndividual implements Individual {
      * @return {@code true} if the coordinates are valid, {@code false} otherwise
      */
     private boolean checkCoordinates(int x, int y, Object[][] array) {
-        // TODO check x/y values on the edges of the pictures (need to be 0 or width/height) - only for setters though
         return x > 0 && y > 0 && x < array.length && y < array[0].length;
     }
 }

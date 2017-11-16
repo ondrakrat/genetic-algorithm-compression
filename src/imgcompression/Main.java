@@ -3,6 +3,7 @@ package imgcompression;
 import imgcompression.ea.EvolutionAlgorithmConfiguration;
 import imgcompression.impl.GridCompressor;
 import imgcompression.impl.GridIndividual;
+import imgcompression.impl.initialPopulation.EqualGridPopulationGenerator;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -25,12 +26,13 @@ public class Main {
         BufferedImage inputImage = ImageIO.read(new File(inputFileName));
         // TODO implement EA methods
         EvolutionAlgorithmConfiguration<GridIndividual> configuration = EvolutionAlgorithmConfiguration.<GridIndividual>builder()
-                .initialPopulationGenerator(() -> null)
+                .initialPopulationGenerator(new EqualGridPopulationGenerator(inputImage, 100))
                 .selection(collection -> null)
                 .crossover((o, o2) -> null)
                 .mutation(o -> null)
                 .fitness(value -> 0)
                 .build();
         GridCompressor compressor = new GridCompressor(inputImage, outputFileName, true, configuration);
+        compressor.run();
     }
 }

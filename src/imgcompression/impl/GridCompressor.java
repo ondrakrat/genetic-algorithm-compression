@@ -37,12 +37,6 @@ public class GridCompressor extends EvolutionAlgorithmExecutor<GridIndividual> {
     @Override
     public void run() {
         // TODO implement
-
-    }
-
-    @Override
-    public Collection<GridIndividual> createInitialPopulation() {
-        // TODO implement
-        return null;
+        Collection<GridIndividual> population = createInitialPopulation();
     }
 }

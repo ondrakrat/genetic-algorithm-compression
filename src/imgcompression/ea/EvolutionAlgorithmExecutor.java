@@ -17,7 +17,9 @@ public abstract class EvolutionAlgorithmExecutor<I extends Individual> {
 
     public abstract void run();
 
-    protected abstract Collection<I> createInitialPopulation();
+    protected Collection<I> createInitialPopulation() {
+        return configuration.getInitialPopulationGeneratorFunction().get();
+    }
 
     protected Collection<I> selection(Collection<I> generation) {
         return configuration.getSelectionFunction().apply(generation);
