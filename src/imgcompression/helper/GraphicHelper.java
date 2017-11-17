@@ -25,7 +25,7 @@ public final class GraphicHelper {
         int red = (getRed(colour1) + getRed(colour2)) / 2;
         int green = (getGreen(colour1) + getGreen(colour2)) / 2;
         int blue = (getBlue(colour1) + getBlue(colour2)) / 2;
-        return (0xff << 24) + (red << 16) + (green << 8) + blue;
+        return convertToARGB(red, green, blue);
     }
 
     /**
@@ -66,6 +66,18 @@ public final class GraphicHelper {
      */
     public static int getAlpha(int colour) {
         return (colour & 0xff000000) >>> 24;
+    }
+
+    /**
+     * Convert given colour parts to a single ARGB int.
+     *
+     * @param red red part (0-255)
+     * @param green green part (0-255)
+     * @param blue blue part (0-255)
+     * @return 32 bit ARGB colour
+     */
+    public static int convertToARGB(int red, int green, int blue) {
+        return (0xff << 24) + (red << 16) + (green << 8) + blue;
     }
 
     /**

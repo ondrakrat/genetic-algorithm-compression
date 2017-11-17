@@ -1,7 +1,9 @@
 package imgcompression.impl;
 
 import imgcompression.ea.Individual;
+import imgcompression.ea.functions.Fitness;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.awt.image.BufferedImage;
 
@@ -11,46 +13,51 @@ import java.awt.image.BufferedImage;
 @Data
 public class GridIndividual implements Individual {
 
+    private final Fitness<GridIndividual> fitnessFunction;  // TODO move to superclass, problems with generics though
     private final BufferedImage inputImage;
 
-    private final double[][][] vertices;    // x and y coordinates
+    private final int[][][] vertices;       // x and y coordinates
     private final int[][][] colours;        // RGB representation
 
     /**
      * Constructor for square grids.
      *
-     * @param inputImage input image
-     * @param dimension amount of tetragons per row
+     * @param inputImage      input image
+     * @param dimension       amount of tetragons per row
+     * @param fitnessFunction fitness function to be used
      */
-    public GridIndividual(BufferedImage inputImage, int dimension) {
+    public GridIndividual(BufferedImage inputImage, int dimension, Fitness<GridIndividual> fitnessFunction) {
         assert dimension > 0;
+        this.fitnessFunction = fitnessFunction;
         this.inputImage = inputImage;
-        this.vertices = new double[dimension + 1][dimension + 1][2];
+        this.vertices = new int[dimension + 1][dimension + 1][2];
         this.colours = new int[dimension][dimension][3];
     }
 
     /**
      * Constructor for rectangular grids.
      *
-     * @param inputImage input image
-     * @param xDimension amount of tetragons per row
-     * @param yDimension amount of tetragons per column
+     * @param inputImage      input image
+     * @param xDimension      amount of tetragons per row
+     * @param yDimension      amount of tetragons per column
+     * @param fitnessFunction fitness function to be used
      */
     public GridIndividual(BufferedImage inputImage,
                           int xDimension,
-                          int yDimension) {
+                          int yDimension, Fitness<GridIndividual> fitnessFunction) {
         assert xDimension > 0 && yDimension > 0;
+        this.fitnessFunction = fitnessFunction;
         this.inputImage = inputImage;
-        this.vertices = new double[xDimension + 1][yDimension + 1][2];
+        this.vertices = new int[xDimension + 1][yDimension + 1][2];
         this.colours = new int[xDimension][yDimension][3];
     }
 
-    public double[] getVertex(int x, int y) {
+    public int[] getVertex(int x, int y) {
         assert checkCoordinates(x, y, vertices);
         return vertices[x][y];
     }
 
-    public int[] getVertexColour(int x, int y) {
+    public int[] getPolygonColour(int x, int y) {
         assert checkCoordinates(x, y, colours);
         return colours[x][y];
     }
@@ -61,6 +68,14 @@ public class GridIndividual implements Individual {
         assert yCoord >= 0 && yCoord < inputImage.getHeight();
         vertices[x][y][0] = xCoord;
         vertices[x][y][1] = yCoord;
+    }
+
+    public void setVertex(int x, int y, int[] coords) {
+        assert checkCoordinates(x, y, vertices);
+        assert coords.length == 2;
+        assert coords[0] >= 0 && coords[0] < inputImage.getWidth();
+        assert coords[1] >= 0 && coords[1] < inputImage.getHeight();
+        vertices[x][y] = coords;
     }
 
     public void setColour(int x, int y, int r, int g, int b) {
@@ -90,5 +105,10 @@ public class GridIndividual implements Individual {
      */
     private boolean checkCoordinates(int x, int y, Object[][] array) {
         return x > 0 && y > 0 && x < array.length && y < array[0].length;
+    }
+
+    @Override
+    public double fitness() {
+        return fitnessFunction.applyAsDouble(this);
     }
 }

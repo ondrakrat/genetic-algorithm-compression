@@ -3,7 +3,9 @@ package imgcompression;
 import imgcompression.ea.EvolutionAlgorithmConfiguration;
 import imgcompression.impl.GridCompressor;
 import imgcompression.impl.GridIndividual;
+import imgcompression.impl.crossover.GridAvgCrossoverFunction;
 import imgcompression.impl.initialPopulation.EqualGridPopulationGenerator;
+import imgcompression.impl.selection.SimpleSelection;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -24,13 +26,11 @@ public class Main {
         String inputFileName = args[0];
         String outputFileName = args[1];
         BufferedImage inputImage = ImageIO.read(new File(inputFileName));
-        // TODO implement EA methods
         EvolutionAlgorithmConfiguration<GridIndividual> configuration = EvolutionAlgorithmConfiguration.<GridIndividual>builder()
                 .initialPopulationGenerator(new EqualGridPopulationGenerator(inputImage, 100))
-                .selection(collection -> null)
-                .crossover((o, o2) -> null)
-                .mutation(o -> null)
-                .fitness(value -> 0)
+                .selection(new SimpleSelection<>(0.1))
+                .crossover(new GridAvgCrossoverFunction())
+                .mutation(o -> o)   // TODO implement mutation
                 .build();
         GridCompressor compressor = new GridCompressor(inputImage, outputFileName, true, configuration);
         compressor.run();

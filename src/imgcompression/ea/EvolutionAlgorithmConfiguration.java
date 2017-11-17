@@ -14,18 +14,15 @@ public class EvolutionAlgorithmConfiguration<I extends Individual> {
     private final Crossover<I> crossoverFunction;
     private final Mutation<I> mutationFunction;
     private final Selection<I> selectionFunction;
-    private final Fitness<I> fitnessFunction;
     private final InitialPopulationGenerator<I> initialPopulationGeneratorFunction;
 
     public EvolutionAlgorithmConfiguration(Crossover<I> crossoverFunction,
                                            Mutation<I> mutationFunction,
                                            Selection<I> selectionFunction,
-                                           Fitness<I> fitnessFunction,
                                            InitialPopulationGenerator<I> initialPopulationGeneratorFunction) {
         this.crossoverFunction = crossoverFunction;
         this.mutationFunction = mutationFunction;
         this.selectionFunction = selectionFunction;
-        this.fitnessFunction = fitnessFunction;
         this.initialPopulationGeneratorFunction = initialPopulationGeneratorFunction;
     }
 
@@ -38,7 +35,6 @@ public class EvolutionAlgorithmConfiguration<I extends Individual> {
         private Crossover<I> crossoverFunction;
         private Mutation<I> mutationFunction;
         private Selection<I> selectionFunction;
-        private Fitness<I> fitnessFunction;
         private InitialPopulationGenerator<I> initialPopulationGeneratorFunction;
 
         private Builder() {
@@ -60,11 +56,6 @@ public class EvolutionAlgorithmConfiguration<I extends Individual> {
             return this;
         }
 
-        public Builder<I> fitness(Fitness<I> fitnessFunction) {
-            this.fitnessFunction = fitnessFunction;
-            return this;
-        }
-
         public Builder<I> initialPopulationGenerator(InitialPopulationGenerator<I> initialPopulationGeneratorFunction) {
             this.initialPopulationGeneratorFunction = initialPopulationGeneratorFunction;
             return this;
@@ -76,7 +67,6 @@ public class EvolutionAlgorithmConfiguration<I extends Individual> {
                     crossoverFunction,
                     mutationFunction,
                     selectionFunction,
-                    fitnessFunction,
                     initialPopulationGeneratorFunction);
         }
 
@@ -89,7 +79,6 @@ public class EvolutionAlgorithmConfiguration<I extends Individual> {
             return crossoverFunction != null
                     && mutationFunction != null
                     && selectionFunction != null
-                    && fitnessFunction != null
                     && initialPopulationGeneratorFunction != null;
         }
     }
