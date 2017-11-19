@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -51,14 +52,12 @@ public class GridCompressor extends EvolutionAlgorithmExecutor<GridIndividual> {
         // TODO implement some actual terminating condition - add as EA functional interface
         while (generation <= 100) {
             // TODO rewrite to streams and execute in parallel
-            // TODO get rid of this cast
-            List<GridIndividual> selectedIndividuals = (List<GridIndividual>) selection(population);
-            population.clear();
-            for (int i = 0; i < selectedIndividuals.size() / 2; ++i) {
-                // omits the last individual if the number of selected individuals is odd. TODO ensure in function?
-                GridIndividual child = crossover(selectedIndividuals.get(i), selectedIndividuals.get(i + 1));
-                population.add(mutation(child));
+            List<GridIndividual> newPopulation = new ArrayList<>(population.size());
+            for (int i = 0; i < population.size(); ++i) {
+                GridIndividual child = crossover(selection(population), selection(population));
+                newPopulation.add(mutation(child));
             }
+            population = newPopulation;
             postGenerationAction(population);
         }
         writeOutput(population);

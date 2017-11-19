@@ -11,4 +11,5 @@ import java.util.function.ToDoubleFunction;
  */
 @FunctionalInterface
 public interface Fitness<I extends Individual> extends ToDoubleFunction<I> {
+    // TODO cache fitness
 }

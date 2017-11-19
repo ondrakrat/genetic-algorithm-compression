@@ -5,7 +5,7 @@ import imgcompression.impl.GridCompressor;
 import imgcompression.impl.GridIndividual;
 import imgcompression.impl.crossover.GridAvgCrossoverFunction;
 import imgcompression.impl.initialPopulation.EqualGridPopulationGenerator;
-import imgcompression.impl.selection.SimpleSelection;
+import imgcompression.impl.selection.RouletteWheelSelection;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -29,7 +29,7 @@ public class Main {
 
         EvolutionAlgorithmConfiguration<GridIndividual> configuration = EvolutionAlgorithmConfiguration.<GridIndividual>builder()
                 .initialPopulationGenerator(new EqualGridPopulationGenerator(inputImage, 100))
-                .selection(new SimpleSelection<>(0.1))  // TODO implement roulette wheel selection
+                .selection(new RouletteWheelSelection<>())
                 .crossover(new GridAvgCrossoverFunction())
                 .mutation(o -> o)   // TODO implement mutation
                 .build();

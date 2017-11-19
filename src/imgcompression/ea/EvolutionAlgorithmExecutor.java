@@ -30,7 +30,7 @@ public abstract class EvolutionAlgorithmExecutor<I extends Individual> {
         return configuration.getInitialPopulationGeneratorFunction().get();
     }
 
-    protected Collection<I> selection(Collection<I> generation) {
+    protected I selection(Collection<I> generation) {
         return configuration.getSelectionFunction().apply(generation);
     }
 
