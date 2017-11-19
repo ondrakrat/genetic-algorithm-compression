@@ -13,6 +13,7 @@ import static imgcompression.helper.GraphicHelper.convertToARGB;
 public class GridFitnessFunction implements Fitness<GridIndividual> {
 
     private final BufferedImage inputImage;
+    private Double cachedFitness = null;
 
     public GridFitnessFunction(BufferedImage inputImage) {
         this.inputImage = inputImage;
@@ -20,6 +21,9 @@ public class GridFitnessFunction implements Fitness<GridIndividual> {
 
     @Override
     public double applyAsDouble(GridIndividual value) {
+        if (cachedFitness != null) {
+            return cachedFitness;
+        }
         double fitness = 0;
         // TODO DOES NOT WORK! need to start from x = 0, j = 1, see GridCompressor#renderImage
         for (int i = 1; i < value.getVertices().length - 1; ++i) {
@@ -29,6 +33,7 @@ public class GridFitnessFunction implements Fitness<GridIndividual> {
                         value.getPolygonColour(i, j), value.getVertex(i - 1, j - 1));
             }
         }
+        cachedFitness = fitness;
         return fitness;
     }
 

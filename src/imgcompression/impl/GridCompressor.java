@@ -80,7 +80,7 @@ public class GridCompressor extends EvolutionAlgorithmExecutor<GridIndividual> {
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Populations is empty"));
         int lastDotIndex = outputFileName.lastIndexOf('.');
-        String fileName = String.format("%s_%d.%s",
+        String fileName = String.format("%s_%d%s",
                 outputFileName.substring(0, lastDotIndex), generation, outputFileName.substring(lastDotIndex));
         renderImage(bestIndividual, fileName);
     }
