@@ -1,5 +1,7 @@
 package imgcompression.ea;
 
+import imgcompression.impl.GridIndividual;
+
 import java.util.Collection;
 
 /**
@@ -16,6 +18,13 @@ public abstract class EvolutionAlgorithmExecutor<I extends Individual> {
     }
 
     public abstract void run();
+
+    /**
+     * Perform post generation actions, such as logging, writing intermediate output files etc.
+     */
+    protected void postGenerationAction(Collection<GridIndividual> newPopulation) {
+        // do nothing by default
+    }
 
     protected Collection<I> createInitialPopulation() {
         return configuration.getInitialPopulationGeneratorFunction().get();

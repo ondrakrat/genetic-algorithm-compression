@@ -21,6 +21,7 @@ public class GridFitnessFunction implements Fitness<GridIndividual> {
     @Override
     public double applyAsDouble(GridIndividual value) {
         double fitness = 0;
+        // TODO DOES NOT WORK! need to start from x = 0, j = 1, see GridCompressor#renderImage
         for (int i = 1; i < value.getVertices().length - 1; ++i) {
             for (int j = 1; j < value.getVertices()[0].length - 1; ++j) {
                 // TODO ensure that indices are started from the same edges (image x grid)

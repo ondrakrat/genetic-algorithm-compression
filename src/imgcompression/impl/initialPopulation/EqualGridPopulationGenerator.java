@@ -2,6 +2,7 @@ package imgcompression.impl.initialPopulation;
 
 import imgcompression.ea.functions.InitialPopulationGenerator;
 import imgcompression.impl.GridIndividual;
+import imgcompression.impl.fitness.GridFitnessFunction;
 
 import java.awt.image.BufferedImage;
 import java.util.Collection;
@@ -38,9 +39,10 @@ public class EqualGridPopulationGenerator implements InitialPopulationGenerator<
     private GridIndividual createIndividual() {
         int xDimension = inputImage.getWidth() / REDUCTION_FACTOR;
         int yDimension = inputImage.getHeight() / REDUCTION_FACTOR;
-        GridIndividual individual = new GridIndividual(inputImage,
+        GridIndividual individual = new GridIndividual(
+                inputImage,
                 xDimension,
-                yDimension, fitnessFunction);
+                yDimension, new GridFitnessFunction(inputImage));
         for (int i = 0; i <= xDimension; ++i) {
             for (int j = 0; j <= yDimension; ++j) {
                 // TODO handle edges

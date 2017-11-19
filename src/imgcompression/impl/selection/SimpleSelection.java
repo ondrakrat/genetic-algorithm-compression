@@ -21,7 +21,7 @@ public class SimpleSelection<I extends Individual> implements Selection<I> {
     @Override
     public Collection<I> apply(Collection<I> individuals) {
         List<I> sorted = individuals.stream()
-                .sorted(Comparator.comparingDouble(I::fitness))
+                .sorted(Comparator.comparingDouble(I::fitness).reversed())
                 .collect(Collectors.toList());
         return sorted.subList(0, (int) (individuals.size() * selectedCount));
     }

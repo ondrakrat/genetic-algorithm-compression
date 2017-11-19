@@ -12,4 +12,5 @@ import java.util.function.Function;
  */
 @FunctionalInterface
 public interface Selection<I extends Individual> extends Function<Collection<I>, Collection<I>> {
+    // TODO return only a single individual, cache fitness
 }

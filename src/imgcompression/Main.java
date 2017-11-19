@@ -26,9 +26,10 @@ public class Main {
         String inputFileName = args[0];
         String outputFileName = args[1];
         BufferedImage inputImage = ImageIO.read(new File(inputFileName));
+
         EvolutionAlgorithmConfiguration<GridIndividual> configuration = EvolutionAlgorithmConfiguration.<GridIndividual>builder()
                 .initialPopulationGenerator(new EqualGridPopulationGenerator(inputImage, 100))
-                .selection(new SimpleSelection<>(0.1))
+                .selection(new SimpleSelection<>(0.1))  // TODO implement roulette wheel selection
                 .crossover(new GridAvgCrossoverFunction())
                 .mutation(o -> o)   // TODO implement mutation
                 .build();

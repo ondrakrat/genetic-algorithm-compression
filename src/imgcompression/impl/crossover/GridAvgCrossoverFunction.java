@@ -14,8 +14,8 @@ public class GridAvgCrossoverFunction implements Crossover<GridIndividual> {
     public GridIndividual apply(GridIndividual individual, GridIndividual individual2) {
         GridIndividual child = new GridIndividual(
                 individual.getInputImage(),
-                individual.getVertices().length,
-                individual.getVertices()[0].length,
+                individual.getColours().length,
+                individual.getColours()[0].length,
                 individual.getFitnessFunction());
         for (int i = 0; i < child.getVertices().length; i++) {
             for (int j = 0; j < child.getVertices()[0].length; ++j) {
@@ -34,8 +34,11 @@ public class GridAvgCrossoverFunction implements Crossover<GridIndividual> {
 
                 // combine colour
                 if (i < child.getColours().length && j < child.getColours()[0].length) {
-                    int[] colour1 = individual.getPolygonColour(i, j);
-                    int[] colour2 = individual2.getPolygonColour(i, j);
+                    int xIndex = Math.min(i, individual.getColours().length - 1);
+                    int yIndex = Math.min(j, individual.getColours()[0].length - 1);
+                    // TODO isn't this flipped?
+                    int[] colour1 = individual.getPolygonColour(xIndex, yIndex);
+                    int[] colour2 = individual2.getPolygonColour(xIndex, yIndex);
                     int color1ARGB = convertToARGB(colour1[0], colour1[1], colour1[2]);
                     int color2ARGB = convertToARGB(colour2[0], colour2[1], colour2[2]);
                     int mixedColour = mixColour(color1ARGB, color2ARGB);
@@ -46,7 +49,7 @@ public class GridAvgCrossoverFunction implements Crossover<GridIndividual> {
         return child;
     }
 
-    private boolean isCorner(int x, int y, int[][][] vertices) {
+    private boolean isCorner(int x, int y, int[][][] vertices) {    // TODO also implement isEdge?
         return (x == 0 && y == 0)
                 || (x == 0 && y == vertices[0].length)
                 || (x == vertices.length && y == 0)
