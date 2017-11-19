@@ -50,7 +50,7 @@ public class GridCompressor extends EvolutionAlgorithmExecutor<GridIndividual> {
         // TODO consider changing the EA functions to return streams instead of collections
         Collection<GridIndividual> population = createInitialPopulation();
         // TODO implement some actual terminating condition - add as EA functional interface
-        while (generation <= 100) {
+        while (generation < 100) {
             // TODO rewrite to streams and execute in parallel
             List<GridIndividual> newPopulation = new ArrayList<>(population.size());
             for (int i = 0; i < population.size(); ++i) {
@@ -87,25 +87,9 @@ public class GridCompressor extends EvolutionAlgorithmExecutor<GridIndividual> {
 
     private void renderImage(GridIndividual individual, String fileName) {
         BufferedImage outputImage = new BufferedImage(inputImage.getWidth(), inputImage.getHeight(), inputImage.getType());
-        // TODO draw polygons instead of setting pixels
-        int[] lastVertex = individual.getVertex(0, 0);
-//        for (int i = 0; i < individual.getVertices().length; ++i) {
-//            for (int j = 1; j < individual.getVertices()[0].length; ++j) {
-//                int[] vertex = individual.getVertex(i, j);
-//                while (pixel <= vertex[0]) {
-//                    int[] colour = individual.getPolygonColour(Math.min(i, individual.getColours().length), j - 1);
-//                    outputImage.setRGB(vertex[0], vertex[1], convertToARGB(colour[0], colour[1], colour[2]));
-//                }
-//            }
-//        }
-
-//        for (int i = 0; i < outputImage.getHeight(); ++i) {
-//            for (int j = 0; j < outputImage.getWidth(); ++j) {
-//
-//            }
-//        }
-
         Graphics2D graphics = outputImage.createGraphics();
+        RenderingHints renderingHints = new RenderingHints(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+        graphics.setRenderingHints(renderingHints);
         for (int i = 1; i < individual.getVertices().length; ++i) {
             for (int j = 1; j < individual.getVertices()[0].length; ++j) {
                 int[] bottomRight = individual.getVertex(i, j);
@@ -113,13 +97,13 @@ public class GridCompressor extends EvolutionAlgorithmExecutor<GridIndividual> {
                 int[] upperRight = individual.getVertex(i - 1, j);
                 int[] upperLeft = individual.getVertex(i - 1, j - 1);
                 Polygon polygon = new Polygon();
-                polygon.addPoint(bottomRight[0], bottomRight[1]);
-                polygon.addPoint(bottomLeft[0], bottomLeft[1]);
                 polygon.addPoint(upperRight[0], upperRight[1]);
                 polygon.addPoint(upperLeft[0], upperLeft[1]);
+                polygon.addPoint(bottomLeft[0], bottomLeft[1]);
+                polygon.addPoint(bottomRight[0], bottomRight[1]);
 
                 int[] polygonColour = individual.getPolygonColour(i - 1, j - 1);
-                Color colour = new Color(polygonColour[0], polygonColour[1], polygonColour[2]);
+                Color colour = new Color(GraphicHelper.convertToARGB(polygonColour[0], polygonColour[1], polygonColour[2]));
                 graphics.setColor(colour);
                 graphics.fillPolygon(polygon);
             }
