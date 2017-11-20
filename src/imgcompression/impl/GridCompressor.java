@@ -49,12 +49,15 @@ public class GridCompressor extends EvolutionAlgorithmExecutor<GridIndividual> {
     public void run() {
         // TODO consider changing the EA functions to return streams instead of collections
         Collection<GridIndividual> population = createInitialPopulation();
+        writeOutput(population);
         // TODO implement some actual terminating condition - add as EA functional interface
-        while (generation < 100) {
+        while (generation < 1000) {
             // TODO rewrite to streams and execute in parallel
             List<GridIndividual> newPopulation = new ArrayList<>(population.size());
             for (int i = 0; i < population.size(); ++i) {
-                GridIndividual child = crossover(selection(population), selection(population));
+                GridIndividual parent1 = selection(population);
+                GridIndividual parent2 = selection(population);
+                GridIndividual child = crossover(parent1, parent2);
                 newPopulation.add(mutation(child));
             }
             population = newPopulation;
@@ -66,8 +69,12 @@ public class GridCompressor extends EvolutionAlgorithmExecutor<GridIndividual> {
     @Override
     protected void postGenerationAction(Collection<GridIndividual> newPopulation) {
         if (debug) {
-            System.out.printf("Generation: %d\n", generation);
-            if (generation % 10 == 0) { // TODO adjust this value
+            double averageFitness = newPopulation.stream()
+                    .mapToDouble(GridIndividual::fitness)
+                    .sum()
+                    / newPopulation.size();
+            System.out.printf("Generation: %d, average fitness: %f\n", generation, averageFitness);
+            if (generation % 100 == 0) { // TODO adjust this value
                 writeOutput(newPopulation);
             }
         }
@@ -97,10 +104,10 @@ public class GridCompressor extends EvolutionAlgorithmExecutor<GridIndividual> {
                 int[] upperRight = individual.getVertex(i - 1, j);
                 int[] upperLeft = individual.getVertex(i - 1, j - 1);
                 Polygon polygon = new Polygon();
-                polygon.addPoint(upperRight[0], upperRight[1]);
-                polygon.addPoint(upperLeft[0], upperLeft[1]);
-                polygon.addPoint(bottomLeft[0], bottomLeft[1]);
                 polygon.addPoint(bottomRight[0], bottomRight[1]);
+                polygon.addPoint(bottomLeft[0], bottomLeft[1]);
+                polygon.addPoint(upperLeft[0], upperLeft[1]);
+                polygon.addPoint(upperRight[0], upperRight[1]);
 
                 int[] polygonColour = individual.getPolygonColour(i - 1, j - 1);
                 Color colour = new Color(GraphicHelper.convertToARGB(polygonColour[0], polygonColour[1], polygonColour[2]));

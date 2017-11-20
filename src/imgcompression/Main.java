@@ -6,7 +6,9 @@ import imgcompression.impl.GridCompressor;
 import imgcompression.impl.GridIndividual;
 import imgcompression.impl.crossover.GridAvgCrossoverFunction;
 import imgcompression.impl.initialPopulation.EqualGridPopulationGenerator;
+import imgcompression.impl.mutation.GridMutationFunction;
 import imgcompression.impl.selection.RouletteWheelSelection;
+import imgcompression.impl.selection.SimpleSelection;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -33,7 +35,7 @@ public class Main {
                 .initialPopulationGenerator(new EqualGridPopulationGenerator(inputImage, 100))
                 .selection(new RouletteWheelSelection<>())
                 .crossover(new GridAvgCrossoverFunction())
-                .mutation(o -> o)   // TODO implement mutation
+                .mutation(new GridMutationFunction(0.05, 0.5))
                 .build();
         GridCompressor compressor = new GridCompressor(inputImage, outputFileName, true, configuration);
         compressor.run();

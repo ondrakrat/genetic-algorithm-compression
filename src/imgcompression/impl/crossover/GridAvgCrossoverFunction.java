@@ -3,7 +3,10 @@ package imgcompression.impl.crossover;
 import imgcompression.ea.functions.Crossover;
 import imgcompression.impl.GridIndividual;
 
+import java.util.Arrays;
+
 import static imgcompression.helper.GraphicHelper.*;
+import static imgcompression.impl.GridIndividual.isCorner;
 
 /**
  * @author Ondřej Kratochvíl
@@ -27,8 +30,8 @@ public class GridAvgCrossoverFunction implements Crossover<GridIndividual> {
                 } else {
                     // combining edges should remain the same - one of the coordinates should be equal for both individuals
                     int[] newCoords = new int[2];
-                    newCoords[0] = (vertex1[0] + vertex2[0]) / 2;
-                    newCoords[1] = (vertex1[1] + vertex2[1]) / 2;
+                    newCoords[0] = Math.toIntExact(Math.round((vertex1[0] + vertex2[0]) / 2.0));
+                    newCoords[1] = Math.toIntExact(Math.round((vertex1[1] + vertex2[1]) / 2.0));
                     child.setVertex(i, j, newCoords);
                 }
 
@@ -46,13 +49,22 @@ public class GridAvgCrossoverFunction implements Crossover<GridIndividual> {
                 }
             }
         }
+//        checkConsistency(child);
         return child;
     }
 
-    private boolean isCorner(int x, int y, int[][][] vertices) {    // TODO also implement isEdge?
-        return (x == 0 && y == 0)
-                || (x == 0 && y == vertices[0].length)
-                || (x == vertices.length && y == 0)
-                || (x == vertices.length && y == vertices[0].length);
+    private void checkConsistency(GridIndividual child) {
+        for (int i = 0; i < child.getVertices().length; i++) {
+            for (int j = 0; j < child.getVertices()[0].length; ++j) {
+                if (j > 0 && child.getVertex(i, j)[0] < child.getVertex(i, j - 1)[0]) {
+                    System.out.println("X coordinate inconsistence, elements: "
+                            + Arrays.toString(child.getVertex(i, j - 1)) + ", " + Arrays.toString(child.getVertex(i, j)));
+                }
+                if (i > 0 && child.getVertex(i, j)[1] < child.getVertex(i - 1, j)[1]) {
+                    System.out.println("Y coordinate inconsistence, elements: "
+                            + Arrays.toString(child.getVertex(i - 1, j)) + ", " + Arrays.toString(child.getVertex(i, j)));
+                }
+            }
+        }
     }
 }

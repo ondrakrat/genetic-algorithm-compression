@@ -38,18 +38,18 @@ public class GridIndividual implements Individual {
      * Constructor for rectangular grids.
      *
      * @param inputImage      input image
-     * @param xDimension      amount of tetragons per row
      * @param yDimension      amount of tetragons per column
+     * @param xDimension      amount of tetragons per row
      * @param fitnessFunction fitness function to be used
      */
     public GridIndividual(BufferedImage inputImage,
-                          int xDimension,
-                          int yDimension, Fitness<GridIndividual> fitnessFunction) {
+                          int yDimension,
+                          int xDimension, Fitness<GridIndividual> fitnessFunction) {
         assert xDimension > 0 && yDimension > 0;
         this.fitnessFunction = fitnessFunction;
         this.inputImage = inputImage;
-        this.vertices = new int[xDimension + 1][yDimension + 1][2];
-        this.colours = new int[xDimension][yDimension][3];
+        this.vertices = new int[yDimension + 1][xDimension + 1][2];
+        this.colours = new int[yDimension][xDimension][3];
     }
 
     public int[] getVertex(int x, int y) {
@@ -110,5 +110,21 @@ public class GridIndividual implements Individual {
     @Override
     public double fitness() {
         return fitnessFunction.applyAsDouble(this);
+    }
+
+    public void invalidateFitnessCache() {
+        // TODO encapsulate
+        fitnessFunction.invalidateCache();
+    }
+
+    public static boolean isCorner(int x, int y, int[][][] vertices) {
+        return (x == 0 && y == 0)
+                || (x == 0 && y == vertices[0].length - 1)
+                || (x == vertices.length - 1 && y == 0)
+                || (x == vertices.length - 1 && y == vertices[0].length - 1);
+    }
+
+    public static boolean isEdge(int x, int y, int[][][] vertices) {
+        return x == 0 || y == 0 || (x == vertices.length - 1) || (y == vertices[0].length - 1);
     }
 }

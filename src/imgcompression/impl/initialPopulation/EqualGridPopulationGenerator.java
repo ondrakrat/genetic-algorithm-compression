@@ -19,7 +19,7 @@ import static imgcompression.helper.GraphicHelper.generateRandomColourPart;
  */
 public class EqualGridPopulationGenerator implements InitialPopulationGenerator<GridIndividual> {
 
-    private static final int REDUCTION_FACTOR = 10;
+    private static final int REDUCTION_FACTOR = 2;
 
     private final BufferedImage inputImage;
     private final int populationSize;
@@ -41,14 +41,12 @@ public class EqualGridPopulationGenerator implements InitialPopulationGenerator<
         int yDimension = inputImage.getHeight() / REDUCTION_FACTOR;
         GridIndividual individual = new GridIndividual(
                 inputImage,
-                xDimension,
-                yDimension, new GridFitnessFunction(inputImage));
-        for (int i = 0; i <= xDimension; ++i) {
-            for (int j = 0; j <= yDimension; ++j) {
-                // TODO handle edges
-                int xCoord = i == 0 ? 0 : (i == xDimension ? inputImage.getWidth() : i * xDimension);
-                // TODO j == 0 -> top, or bottom?
-                int yCoord = j == 0 ? 0 : (j == yDimension ? inputImage.getHeight() : j * yDimension);
+                yDimension,
+                xDimension, new GridFitnessFunction(inputImage));
+        for (int i = 0; i <= yDimension; ++i) {
+            for (int j = 0; j <= xDimension; ++j) {
+                int xCoord = j == 0 ? 0 : (j == xDimension ? inputImage.getWidth() : j * xDimension);
+                int yCoord = i == 0 ? 0 : (i == yDimension ? inputImage.getHeight() : i * yDimension);
                 individual.setVertex(i, j, xCoord, yCoord);
                 if (i < xDimension && j < yDimension) {
                     individual.setColour(i, j,

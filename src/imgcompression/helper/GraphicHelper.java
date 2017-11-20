@@ -71,9 +71,9 @@ public final class GraphicHelper {
     /**
      * Convert given colour parts to a single ARGB int.
      *
-     * @param red red part (0-255)
+     * @param red   red part (0-255)
      * @param green green part (0-255)
-     * @param blue blue part (0-255)
+     * @param blue  blue part (0-255)
      * @return 32 bit ARGB colour
      */
     public static int convertToARGB(int red, int green, int blue) {
@@ -98,9 +98,9 @@ public final class GraphicHelper {
      * [{@code centerX}, {@code centerY}] and with given {@code diameter}. With this implementation, counts
      * occurrences of the exact pixels.
      *
-     * @param image source image
-     * @param centerX x coordinate of the center of the circle
-     * @param centerY y coordinate of the center of the circle
+     * @param image    source image
+     * @param centerX  x coordinate of the center of the circle
+     * @param centerY  y coordinate of the center of the circle
      * @param diameter diameter of the circle
      * @return most frequent colour in the area of the circle
      */
@@ -136,9 +136,9 @@ public final class GraphicHelper {
      * the dominant colour from the (section of the) image. At this moment, selects the most dominant colour from
      * the <strong>circumscribed square</strong> around the circle.
      *
-     * @param image source image
-     * @param centerX x coordinate of the center of the circle
-     * @param centerY y coordinate of the center of the circle
+     * @param image    source image
+     * @param centerX  x coordinate of the center of the circle
+     * @param centerY  y coordinate of the center of the circle
      * @param diameter diameter of the circle
      * @return most dominant colour in the area of the circle
      */
@@ -185,5 +185,12 @@ public final class GraphicHelper {
     public static int generateRandomColourPart() {
         ThreadLocalRandom random = ThreadLocalRandom.current();
         return random.nextInt(256);
+    }
+
+    public static double pixelDiff(int pixel1, int pixel2) {
+        double redDiff = Math.abs(getRed(pixel1) - getRed(pixel2));
+        double greenDiff = Math.abs(getGreen(pixel1) - getGreen(pixel2));
+        double blueDiff = Math.abs(getBlue(pixel1) - getBlue(pixel2));
+        return redDiff + greenDiff + blueDiff;
     }
 }

@@ -11,4 +11,8 @@ import java.util.function.ToDoubleFunction;
  */
 @FunctionalInterface
 public interface Fitness<I extends Individual> extends ToDoubleFunction<I> {
+
+    default void invalidateCache() {
+        // to be implemented by caching algorithms
+    }
 }
