@@ -52,24 +52,24 @@ public class GridMutationFunction implements Mutation<GridIndividual> {
                             ? bottomRight[1] : individual.getVertex(i + 1, j)[1];
 
                     if (isEdge(i, j, individual.getVertices())) {
-//                        int xCoord, yCoord;
-//                        if (vertex[0] == 0 || vertex[0] == bottomRight[0]) {    // top or bottom edge
-//                            if (Math.max(previousY, vertex[1] - yMutationDelta) >= Math.min(nextY, vertex[1] + yMutationDelta)) {
-//                                yCoord = Math.max(previousY, vertex[1] - yMutationDelta);
-//                            } else {
-//                                yCoord = random.nextInt(Math.max(previousY, vertex[1] - yMutationDelta),
-//                                        Math.min(nextY, vertex[1] + yMutationDelta));
-//                            }
-//                            individual.setVertex(i, j, vertex[0], yCoord);
-//                        } else {    // left or right edge
-//                            if (Math.max(previousX, vertex[0] - xMutationDelta) >= Math.min(nextX, vertex[0] + xMutationDelta)) {
-//                                xCoord = Math.max(previousX, vertex[0] - xMutationDelta);
-//                            } else {
-//                                xCoord = random.nextInt(Math.max(previousX, vertex[0] - xMutationDelta),
-//                                        Math.min(nextX, vertex[0] + xMutationDelta));
-//                            }
-//                            individual.setVertex(i, j, xCoord, vertex[1]);
-//                        }
+                        int xCoord, yCoord;
+                        if (vertex[0] == 0 || vertex[0] == bottomRight[0]) {    // top or bottom edge
+                            if (Math.max(previousY, vertex[1] - yMutationDelta) >= Math.min(nextY, vertex[1] + yMutationDelta)) {
+                                yCoord = Math.max(previousY, vertex[1] - yMutationDelta);
+                            } else {
+                                yCoord = random.nextInt(Math.max(previousY, vertex[1] - yMutationDelta),
+                                        Math.min(nextY, vertex[1] + yMutationDelta));
+                            }
+                            individual.setVertex(i, j, vertex[0], yCoord);
+                        } else {    // left or right edge
+                            if (Math.max(previousX, vertex[0] - xMutationDelta) >= Math.min(nextX, vertex[0] + xMutationDelta)) {
+                                xCoord = Math.max(previousX, vertex[0] - xMutationDelta);
+                            } else {
+                                xCoord = random.nextInt(Math.max(previousX, vertex[0] - xMutationDelta),
+                                        Math.min(nextX, vertex[0] + xMutationDelta));
+                            }
+                            individual.setVertex(i, j, xCoord, vertex[1]);
+                        }
                     } else {
                         int xCoord, yCoord;
                         if (Math.max(previousX, vertex[0] - xMutationDelta) >= Math.min(nextX, vertex[0] + xMutationDelta)) {
@@ -103,11 +103,11 @@ public class GridMutationFunction implements Mutation<GridIndividual> {
                     int mutationDelta = (int) (255 * mutationExtent);
                     int[] polygonColour = individual.getPolygonColour(i, j);
                     int red = random.nextInt(Math.max(0, polygonColour[0] - mutationDelta),
-                            Math.min(255, polygonColour[0] + mutationDelta));
+                            Math.min(256, polygonColour[0] + mutationDelta + 1));
                     int green = random.nextInt(Math.max(0, polygonColour[1] - mutationDelta),
-                            Math.min(255, polygonColour[1] + mutationDelta));
+                            Math.min(256, polygonColour[1] + mutationDelta + 1));
                     int blue = random.nextInt(Math.max(0, polygonColour[2] - mutationDelta),
-                            Math.min(255, polygonColour[2] + mutationDelta));
+                            Math.min(256, polygonColour[2] + mutationDelta + 1));
                     individual.setColour(i, j, red, green, blue);
                 }
             }

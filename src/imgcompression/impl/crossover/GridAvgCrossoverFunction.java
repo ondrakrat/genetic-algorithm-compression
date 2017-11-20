@@ -39,7 +39,6 @@ public class GridAvgCrossoverFunction implements Crossover<GridIndividual> {
                 if (i < child.getColours().length && j < child.getColours()[0].length) {
                     int xIndex = Math.min(i, individual.getColours().length - 1);
                     int yIndex = Math.min(j, individual.getColours()[0].length - 1);
-                    // TODO isn't this flipped?
                     int[] colour1 = individual.getPolygonColour(xIndex, yIndex);
                     int[] colour2 = individual2.getPolygonColour(xIndex, yIndex);
                     int color1ARGB = convertToARGB(colour1[0], colour1[1], colour1[2]);

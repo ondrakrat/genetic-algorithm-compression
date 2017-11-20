@@ -3,8 +3,7 @@ package imgcompression.impl.selection;
 import imgcompression.ea.Individual;
 import imgcompression.ea.functions.Selection;
 
-import java.util.Collection;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author Ondřej Kratochvíl

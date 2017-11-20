@@ -2,10 +2,13 @@ package imgcompression.impl;
 
 import imgcompression.ea.Individual;
 import imgcompression.ea.functions.Fitness;
+import javafx.util.Pair;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.awt.image.BufferedImage;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Ondřej Kratochvíl

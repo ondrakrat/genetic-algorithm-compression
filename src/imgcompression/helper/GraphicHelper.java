@@ -22,9 +22,9 @@ public final class GraphicHelper {
      * @return mixed colour
      */
     public static int mixColour(int colour1, int colour2) {
-        int red = (getRed(colour1) + getRed(colour2)) / 2;
-        int green = (getGreen(colour1) + getGreen(colour2)) / 2;
-        int blue = (getBlue(colour1) + getBlue(colour2)) / 2;
+        int red = Math.round((getRed(colour1) + getRed(colour2)) / 2);
+        int green = Math.round((getGreen(colour1) + getGreen(colour2)) / 2);
+        int blue = Math.round((getBlue(colour1) + getBlue(colour2)) / 2);
         return convertToARGB(red, green, blue);
     }
 

@@ -51,12 +51,16 @@ public class GridCompressor extends EvolutionAlgorithmExecutor<GridIndividual> {
         Collection<GridIndividual> population = createInitialPopulation();
         writeOutput(population);
         // TODO implement some actual terminating condition - add as EA functional interface
-        while (generation < 1000) {
+        while (generation < 1_000) {
             // TODO rewrite to streams and execute in parallel
             List<GridIndividual> newPopulation = new ArrayList<>(population.size());
+//            population.stream()
+//                    .sorted(Comparator.comparingDouble(GridIndividual::fitness).reversed())
+//                    .forEach(individual -> System.out.println("Fitness: " + individual.fitness()));
             for (int i = 0; i < population.size(); ++i) {
                 GridIndividual parent1 = selection(population);
                 GridIndividual parent2 = selection(population);
+//                System.out.println("Selected fitness: " + parent1.fitness() + ", " + parent2.fitness());
                 GridIndividual child = crossover(parent1, parent2);
                 newPopulation.add(mutation(child));
             }

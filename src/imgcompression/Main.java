@@ -5,6 +5,7 @@ import imgcompression.helper.GraphicHelper;
 import imgcompression.impl.GridCompressor;
 import imgcompression.impl.GridIndividual;
 import imgcompression.impl.crossover.GridAvgCrossoverFunction;
+import imgcompression.impl.crossover.GridNPointCrossoverFunction;
 import imgcompression.impl.initialPopulation.EqualGridPopulationGenerator;
 import imgcompression.impl.mutation.GridMutationFunction;
 import imgcompression.impl.selection.RouletteWheelSelection;
@@ -15,6 +16,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static imgcompression.helper.GraphicHelper.generateRandomColourPart;
 
 /**
  * @author Ondřej Kratochvíl
@@ -32,11 +36,26 @@ public class Main {
         BufferedImage inputImage = ImageIO.read(new File(inputFileName));
 
         EvolutionAlgorithmConfiguration<GridIndividual> configuration = EvolutionAlgorithmConfiguration.<GridIndividual>builder()
-                .initialPopulationGenerator(new EqualGridPopulationGenerator(inputImage, 100))
+                .initialPopulationGenerator(new EqualGridPopulationGenerator(inputImage, 2))
                 .selection(new RouletteWheelSelection<>())
-                .crossover(new GridAvgCrossoverFunction())
+//                .selection(new SimpleSelection<>())
+//                .crossover(new GridAvgCrossoverFunction())
+                .crossover(new GridNPointCrossoverFunction())
                 .mutation(new GridMutationFunction(0.05, 0.5))
-//                .mutation(individual -> individual)
+//                .mutation(individual -> {
+//                    if (ThreadLocalRandom.current().nextDouble() < 0.05) {
+//                        int[][][] vertices = individual.getVertices();
+//                        GridIndividual gridIndividual = new GridIndividual(individual.getInputImage(), vertices.length, vertices[0].length, individual.getFitnessFunction());
+//                        int[][][] colours = individual.getColours();
+//                        for (int i = 0; i < colours.length; ++i) {
+//                            for (int j = 0; j < colours[0].length; ++j) {
+//                                gridIndividual.setColour(i, j, generateRandomColourPart(), generateRandomColourPart(), generateRandomColourPart());
+//                            }
+//                        }
+//                        return gridIndividual;
+//                    }
+//                    return individual;
+//                })
                 .build();
         GridCompressor compressor = new GridCompressor(inputImage, outputFileName, true, configuration);
         compressor.run();
