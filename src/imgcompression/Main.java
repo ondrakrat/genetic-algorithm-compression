@@ -36,6 +36,7 @@ public class Main {
                 .selection(new RouletteWheelSelection<>())
                 .crossover(new GridAvgCrossoverFunction())
                 .mutation(new GridMutationFunction(0.05, 0.5))
+//                .mutation(individual -> individual)
                 .build();
         GridCompressor compressor = new GridCompressor(inputImage, outputFileName, true, configuration);
         compressor.run();

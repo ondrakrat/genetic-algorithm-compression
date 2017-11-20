@@ -19,7 +19,7 @@ import static imgcompression.helper.GraphicHelper.generateRandomColourPart;
  */
 public class EqualGridPopulationGenerator implements InitialPopulationGenerator<GridIndividual> {
 
-    private static final int REDUCTION_FACTOR = 2;
+    private static final int REDUCTION_FACTOR = 50;
 
     private final BufferedImage inputImage;
     private final int populationSize;
@@ -45,8 +45,8 @@ public class EqualGridPopulationGenerator implements InitialPopulationGenerator<
                 xDimension, new GridFitnessFunction(inputImage));
         for (int i = 0; i <= yDimension; ++i) {
             for (int j = 0; j <= xDimension; ++j) {
-                int xCoord = j == 0 ? 0 : (j == xDimension ? inputImage.getWidth() : j * xDimension);
-                int yCoord = i == 0 ? 0 : (i == yDimension ? inputImage.getHeight() : i * yDimension);
+                int xCoord = j == 0 ? 0 : (j == xDimension ? inputImage.getWidth() : ((inputImage.getWidth() / xDimension) * j));
+                int yCoord = i == 0 ? 0 : (i == yDimension ? inputImage.getHeight() : ((inputImage.getHeight() / yDimension) * i));
                 individual.setVertex(i, j, xCoord, yCoord);
                 if (i < xDimension && j < yDimension) {
                     individual.setColour(i, j,

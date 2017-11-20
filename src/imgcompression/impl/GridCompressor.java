@@ -90,6 +90,7 @@ public class GridCompressor extends EvolutionAlgorithmExecutor<GridIndividual> {
         String fileName = String.format("%s_%d%s",
                 outputFileName.substring(0, lastDotIndex), generation, outputFileName.substring(lastDotIndex));
         renderImage(bestIndividual, fileName);
+//        renderEqualGrid(bestIndividual, fileName);
     }
 
     private void renderImage(GridIndividual individual, String fileName) {
@@ -113,6 +114,29 @@ public class GridCompressor extends EvolutionAlgorithmExecutor<GridIndividual> {
                 Color colour = new Color(GraphicHelper.convertToARGB(polygonColour[0], polygonColour[1], polygonColour[2]));
                 graphics.setColor(colour);
                 graphics.fillPolygon(polygon);
+            }
+        }
+        try {
+            ImageIO.write(outputImage, "jpeg", new File(fileName));
+        } catch (IOException e) {
+            System.err.println("Cannot render image");
+            e.printStackTrace();
+        }
+    }
+
+    private void renderEqualGrid(GridIndividual individual, String fileName) {
+        BufferedImage outputImage = new BufferedImage(inputImage.getWidth(), inputImage.getHeight(), inputImage.getType());
+        for (int i = 1; i < individual.getVertices().length; ++i) {
+            for (int j = 1; j < individual.getVertices()[0].length; ++j) {
+                int[] polygonColour = individual.getPolygonColour(i - 1, j - 1);
+
+                int[] prevVertex = individual.getVertex(i - 1, j - 1);
+                int[] vertex = individual.getVertex(i, j);
+                for (int k = prevVertex[0]; k < vertex[0] - 1; ++k) {
+                    for (int l = prevVertex[1]; l < vertex[1] - 1; ++l) {
+                        outputImage.setRGB(k, l, GraphicHelper.convertToARGB(polygonColour[0], polygonColour[1], polygonColour[2]));
+                    }
+                }
             }
         }
         try {
